@@ -1,0 +1,296 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+
+.page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.header p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 1rem;
+}
+
+.input-group:last-child { margin-bottom: 0; }
+
+.input-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  background: var(--color-background-primary);
+  transition: border-color 0.2s;
+}
+
+.input-row:focus-within {
+  border-color: var(--color-border-primary);
+  box-shadow: 0 0 0 3px rgba(120,120,255,0.08);
+}
+
+.input-row input {
+  border: none;
+  outline: none;
+  padding: 10px 12px;
+  font-size: 15px;
+  color: var(--color-text-primary);
+  background: transparent;
+  flex: 1;
+  width: 100%;
+}
+
+.input-row .unit {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+  background: var(--color-background-secondary);
+  border-left: 0.5px solid var(--color-border-tertiary);
+  white-space: nowrap;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.btn-primary {
+  flex: 1;
+  background: var(--color-text-primary);
+  color: var(--color-background-primary);
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 11px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-secondary:hover { background: var(--color-background-secondary); }
+
+.result-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  display: none;
+}
+
+.result-card.show { display: block; }
+
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.metric {
+  padding: 1.25rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  border-right: 0.5px solid var(--color-border-tertiary);
+}
+
+.metric:nth-child(2) { border-right: none; }
+.metric:nth-child(3), .metric:nth-child(4) { border-bottom: none; }
+
+.metric-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.durum-row {
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 0.5px solid var(--color-border-tertiary);
+}
+
+.durum-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.badge {
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.badge.batar { background: #ffebee; color: #c62828; }
+.badge.yuzer { background: #e8f5e9; color: #2e7d32; }
+.badge.askida { background: #fff3e0; color: #e65100; }
+
+.error-card {
+  background: var(--color-background-danger);
+  border: 0.5px solid var(--color-border-danger);
+  border-radius: var(--border-radius-md);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--color-text-danger);
+  display: none;
+  margin-bottom: 0.5rem;
+}
+
+.error-card.show { display: block; }
+</style>
+
+<div class="page">
+  <div class="header">
+    <h1>Yoğunluk Hesaplayıcı</h1>
+    <p>Cismin sıvıdaki davranışını hesaplar</p>
+  </div>
+
+  <div class="card">
+    <div class="input-group">
+      <label>Kütle</label>
+      <div class="input-row">
+        <input type="number" id="kutle" placeholder="0" step="any">
+        <span class="unit">g</span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Hacim</label>
+      <div class="input-row">
+        <input type="number" id="hacim" placeholder="0" step="any">
+        <span class="unit">cm³</span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Sıvı yoğunluğu</label>
+      <div class="input-row">
+        <input type="number" id="sivi" placeholder="1.0" step="any">
+        <span class="unit">g/cm³</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-card" id="hata">Lütfen tüm alanlara geçerli ve sıfırdan büyük değer girin.</div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="hesapla()">Hesapla</button>
+    <button class="btn-secondary" onclick="temizle()">Temizle</button>
+  </div>
+
+  <div style="height: 1rem;"></div>
+
+  <div class="result-card" id="sonuc">
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Cisim yoğunluğu</div>
+        <div class="metric-value" id="r-yogunluk">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Batan kısım</div>
+        <div class="metric-value" id="r-oran">—</div>
+      </div>
+    </div>
+    <div class="durum-row">
+      <span class="durum-label">Durum</span>
+      <span class="badge" id="r-durum">—</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function hesapla() {
+  const hata = document.getElementById('hata');
+  const sonuc = document.getElementById('sonuc');
+  hata.classList.remove('show');
+  sonuc.classList.remove('show');
+
+  const m = parseFloat(document.getElementById('kutle').value);
+  const v = parseFloat(document.getElementById('hacim').value);
+  const sd = parseFloat(document.getElementById('sivi').value);
+
+  if (isNaN(m) || isNaN(v) || isNaN(sd) || v <= 0 || sd <= 0 || m <= 0) {
+    hata.classList.add('show');
+    return;
+  }
+
+  const cisimD = m / v;
+  let oran = (cisimD / sd) * 100;
+  let durum, durumClass;
+
+  if (oran > 100) { oran = 100; durum = 'BATAR'; durumClass = 'batar'; }
+  else if (Math.round(oran * 100) / 100 === 100) { durum = 'ASKIDA'; durumClass = 'askida'; }
+  else { durum = 'YÜZER'; durumClass = 'yuzer'; }
+
+  document.getElementById('r-yogunluk').textContent = cisimD.toFixed(2) + ' g/cm³';
+  document.getElementById('r-oran').textContent = '%' + oran.toFixed(1);
+  const badge = document.getElementById('r-durum');
+  badge.textContent = durum;
+  badge.className = 'badge ' + durumClass;
+
+  sonuc.classList.add('show');
+}
+
+function temizle() {
+  ['kutle','hacim','sivi'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sonuc').classList.remove('show');
+  document.getElementById('hata').classList.remove('show');
+}
+</script>
